@@ -50,9 +50,6 @@ fname = input('Enter file name: ')
 if len(fname) < 1:
     fname = 'roster_data.json'
 
-# [
-#   [ "Charley", "si110", 1 ],
-#   [ "Mea", "si110", 0 ],
 
 str_data = open(fname).read()
 json_data = json.loads(str_data)
@@ -85,11 +82,19 @@ str_data.close()
 ```
 ### Code Description
 - we import json and sqlite3 modules
-- we make a database connection to create database 'rosterdb.sqlite' and also create a cursor() connection to enable sending and retrieving commands to the database.
-- we drop table if exists to avoid an error call incase we are creating a table that already exists.
-- we create user, course and member table with user and course having primary key that ar automatically incremented while 
-- 
+- we make a database connection to create database 'rosterdb.sqlite' and also create a 'cursor()' connection to enable sending and retrieving commands to the database.
+- we drop table if exists to avoid a traceback error incase we are creating a table that already exists.
+- we create user, course and member table with user and course tables having primary keys that are automatically incremented while member table has two foreign keys.
+- Now we prompt the user to input a json file as fname but if the user wants to maintain reading roster_data.json the he/she should hit enter (whose len < 1), open the file and read it. We parse the json file through json.loads and we get a list objects. It's a list of lists so we iterate over it to get the values.
+- We use the 'cursor()' method of the connection to send an 'INSERT OR IGNORE' command to the database, inserting data into both the 'user' table and the 'title' table. This SQL statement inserts a new record into the 'User' table and the 'Course' table with the specified 'name' and 'title only if there is no existing record with the same 'name' and 'title. This is because during the creation of the table they were specified as unique values.
+- 'VALUES ( ? )' this code is usually written this way with a tuple containing the value to be inserted to avoid SQL injection.
+- WE use 'cursor()' method of the connection to send an 'SELECT' command to the database, retrieving the course_id and user_id from the first column of 'User' and 'Course' tables.
+- We also 'INSERT OR REPLACE' values into the member table
+- Then we 'commit()' to save changes in the database and close the file.
 
+### Results
+![course](https://github.com/chinenyejuliet/Roster/assets/142748509/fa03dfd6-370e-414c-9ade-782c1f81134c)
 
+![user](https://github.com/chinenyejuliet/Roster/assets/142748509/3fb01035-58e5-40d0-b2ee-db775df6a2f5)
 
-
+![member](https://github.com/chinenyejuliet/Roster/assets/142748509/15e34742-20c5-46cd-9501-ddfc393c9738)
