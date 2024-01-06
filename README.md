@@ -1,5 +1,15 @@
 # Roster
 
+## Table of Content
+- [Project Overview](#project-overview)
+- [Data Sources](#data-sources)
+- [Data Model](#data-model)
+- [Tools](#tools)
+- [Code](#code)
+- [Code Description](#code-description)
+- [Results](#results)
+  
+
 ## Project Overview
 The purpose of this project is to demonstrate how we can write a python application that  will read roster data in a JSON format, parse the file, and then produce an SQLite database that contains a User, Course, and Member table and populate the tables from the data file. This is a type of data model relationship that has many to many relationships and there is no separate primary key. As a result, we add a connection table (also called junction table) with two foreign keys. This project described a relationship where there is users and courses, one user is a member of many courses and  each course has many users. The relationship between the courses and the users (ie the membership of the relatioship) is many on bpth ends. We can't just model directly so we create a junction table called member. We still have the course and the user table and this time they have primary keys. Then the member table has each row that has two foreign keys.
 
@@ -15,7 +25,8 @@ The primary data used for this project is "roster_data.json" file containing a u
 - json
 
 ### Code
-``` python3
+```
+-python3
 import json
 import sqlite3
 
@@ -80,6 +91,13 @@ for entry in json_data:
     
 str_data.close()
 ```
+```
+-sql
+SELECT User.name,Course.title, Member.role FROM 
+    User JOIN Member JOIN Course 
+    ON User.id = Member.user_id AND Member.course_id = Course.id
+    ORDER BY  Course.title DESC, Member.role DESC LIMIT 10;
+```
 ### Code Description
 - we import json and sqlite3 modules
 - we make a database connection to create database 'rosterdb.sqlite' and also create a 'cursor()' connection to enable sending and retrieving commands to the database.
@@ -91,10 +109,11 @@ str_data.close()
 - WE use 'cursor()' method of the connection to send an 'SELECT' command to the database, retrieving the course_id and user_id from the first column of 'User' and 'Course' tables.
 - We also 'INSERT OR REPLACE' values into the member table
 - Then we 'commit()' to save changes in the database and close the file.
+- So now we are going to use 'SELECT User.name,Course.title, Member.role FROM 
+    User JOIN Member JOIN Course 
+    ON User.id = Member.user_id AND Member.course_id = Course.id
+    ORDER BY User.name DESC, Course.title DESC, Member.role DESC LIMIT 10;' to join all those together into one big long row. We use the ON clause and the Member.user_id is equal to the user's id and the members and the courses, the membership course id is equal to the course's id. Member.course_id equals the course's id. We're going to order by the course title then the member role. The way these. And then member role descending and then the user name
 
 ### Results
-![course](https://github.com/chinenyejuliet/Roster/assets/142748509/fa03dfd6-370e-414c-9ade-782c1f81134c)
+![result](https://github.com/chinenyejuliet/Roster/assets/142748509/c6f19a0a-3742-4118-a257-99e2876c6516)
 
-![user](https://github.com/chinenyejuliet/Roster/assets/142748509/3fb01035-58e5-40d0-b2ee-db775df6a2f5)
-
-![member](https://github.com/chinenyejuliet/Roster/assets/142748509/15e34742-20c5-46cd-9501-ddfc393c9738)
