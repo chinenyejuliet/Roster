@@ -112,7 +112,7 @@ SELECT User.name,Course.title, Member.role FROM
 - So now we are going to use 'SELECT User.name,Course.title, Member.role FROM 
     User JOIN Member JOIN Course 
     ON User.id = Member.user_id AND Member.course_id = Course.id
-    ORDER BY User.name DESC, Course.title DESC, Member.role DESC LIMIT 10;' to join all those together into one big long row. We use the ON clause and the Member.user_id is equal to the user's id and the members and the courses, the membership course id is equal to the course's id. Member.course_id equals the course's id. We're going to order by the course title then the member role. The way these. And then member role descending and then the user name
+    ORDER BY User.name DESC, Course.title DESC, Member.role DESC LIMIT 10;' to join all those together into one big long row. We use the ON clause and the Member.user_id is equal to the user's id and the members and the courses, the membership course id is equal to the course's id. Member.course_id equals the course's id. We're going to order by the course title then the member role. The 'LIMIT' clause limits the result of the 'SELECT' statement to 10 users only. 
 
 ### Results
 ![result](https://github.com/chinenyejuliet/Roster/assets/142748509/c6f19a0a-3742-4118-a257-99e2876c6516)
